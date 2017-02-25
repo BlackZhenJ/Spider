@@ -1,0 +1,16 @@
+﻿body {
+}
+
+.logo-span{
+    font-size: xx-large;
+    font-family:Verdana;
+    font:700;
+}
+.logo-contaner{
+    margin-top:15px;
+    margin-bottom:15px;
+}
+
+.addTop{
+    margin-top:15px;
+}

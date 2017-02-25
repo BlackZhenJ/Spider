@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewBag.Title = "Query";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('customersCtrl', function ($scope, $http) {
+        QueryData($scope, $http);
+        $scope.at = function () {
+            QueryData($scope, $http);
+        }
+    });
+
+
+    function QueryData($scope, $http) {
+        //$scope.names = [{ "Name": "z", "Country": "c" }, { "Name": "z1", "Country": "c1" }]
+        $http.get("/Stratage/QueryStratage")
+        .success(function (response) {
+            $scope.names = response.records;
+            if (response.records.length == 0) {
+                $("#tb_stratage").innerHtml("<td col=3>no data</td>")
+            }
+        });
+    }
+
+    function queryClick() {
+        app.controller('customersCtrl', function ($scope, $http) {
+            QueryData($scope, $http);
+        });
+    }
+</script>
+
+<div ng-app="myApp" ng-controller="customersCtrl" class="row addTop">
+    <div class="btn-group addTop">
+        <button type="button" id="btn_Query" class="btn btn-default" ng-click="at()">Query</button>
+        <a class="btn btn-default" href="/Home">back</a>
+    </div>
+
+    <div>
+
+        <table id="tb_stratage" class="table addTop">
+            <thead>
+                <tr>
+                    <td>Check</td>
+                    <td>Name</td>
+                    <td>Country</td>
+                </tr>
+            </thead>
+            <tr ng-repeat="x in names">
+                <td><input type="checkbox" class="checkbox" /></td>
+                <td>{{ x.Name }}</td>
+                <td>{{ x.Country }}</td>
+            </tr>
+        </table>
+
+    </div>
+</div>
