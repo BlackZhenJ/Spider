@@ -1,11 +1,10 @@
-﻿using System.Web;
-using System.Web.Mvc;
+﻿using Spider.Infrastructure;
 
-namespace Spider
+namespace Spider.App_Start
 {
     public class FilterConfig
     {
-        public static void RegisterGlobalFilters(GlobalFilterCollection filters)
+        public static void Configure(System.Web.Mvc.GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
         }

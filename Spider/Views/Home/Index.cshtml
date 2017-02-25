@@ -1,14 +1,7 @@
-﻿@section title{
-    Angular2 Version
+﻿
+@{
+    ViewBag.Title = "Home";
 }
-@section scripts{
-    @Html.Partial("DefineAngular")
-    <script>
-        System.import('app/boottodolist');
-    </script>
-}
-<todolist class="todolistcontent">
-    <div class="waitloading">
-        loading...
-    </div>
-</todolist>
+
+<h2>Home</h2>
+
