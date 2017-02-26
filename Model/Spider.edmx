@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="SpiderModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="spiderModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="stratagedatacondition">
           <Key>
             <PropertyRef Name="stdid" />
@@ -38,12 +38,84 @@
           <Property Name="StaDeep" Type="int" />
           <Property Name="StaStatus" Type="varchar" MaxLength="50" />
         </EntityType>
-        <EntityType Name="test">
+        <Association Name="StdStratage">
+          <End Role="stratege" Type="Self.stratege" Multiplicity="1" />
+          <End Role="stratagedatacondition" Type="Self.stratagedatacondition" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="stratege">
+              <PropertyRef Name="StaId" />
+            </Principal>
+            <Dependent Role="stratagedatacondition">
+              <PropertyRef Name="stdid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="StpStratage">
+          <End Role="stratege" Type="Self.stratege" Multiplicity="1" />
+          <End Role="stratagepagecondition" Type="Self.stratagepagecondition" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="stratege">
+              <PropertyRef Name="StaId" />
+            </Principal>
+            <Dependent Role="stratagepagecondition">
+              <PropertyRef Name="stpid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="spiderModelStoreContainer">
+          <EntitySet Name="stratagedatacondition" EntityType="Self.stratagedatacondition" Schema="spider" store:Type="Tables" />
+          <EntitySet Name="stratagepagecondition" EntityType="Self.stratagepagecondition" Schema="spider" store:Type="Tables" />
+          <EntitySet Name="stratege" EntityType="Self.stratege" Schema="spider" store:Type="Tables" />
+          <AssociationSet Name="StdStratage" Association="Self.StdStratage">
+            <End Role="stratege" EntitySet="stratege" />
+            <End Role="stratagedatacondition" EntitySet="stratagedatacondition" />
+          </AssociationSet>
+          <AssociationSet Name="StpStratage" Association="Self.StpStratage">
+            <End Role="stratege" EntitySet="stratege" />
+            <End Role="stratagepagecondition" EntitySet="stratagepagecondition" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="spiderModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="stratagedatacondition">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="stdid" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
-          <Property Name="name" Type="varchar" MaxLength="45" />
+          <Property Name="stdid" Type="Int32" Nullable="false" />
+          <Property Name="StdName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StdTransName" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="StdSelector" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="StdAttribute" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="StdText" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="StdStratage" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="stratege" Relationship="Self.StdStratage" FromRole="stratagedatacondition" ToRole="stratege" />
+        </EntityType>
+        <EntityType Name="stratagepagecondition">
+          <Key>
+            <PropertyRef Name="stpid" />
+          </Key>
+          <Property Name="stpid" Type="Int32" Nullable="false" />
+          <Property Name="StpName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StpSelector" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="StpAttribute" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StpText" Type="Boolean" />
+          <Property Name="StpStratage" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="stratege" Relationship="Self.StpStratage" FromRole="stratagepagecondition" ToRole="stratege" />
+        </EntityType>
+        <EntityType Name="stratege">
+          <Key>
+            <PropertyRef Name="StaId" />
+          </Key>
+          <Property Name="StaId" Type="Int32" Nullable="false" />
+          <Property Name="StaName" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="StaRootUrl" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="StaDeep" Type="Int32" />
+          <Property Name="StaStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="stratagedatacondition" Relationship="Self.StdStratage" FromRole="stratege" ToRole="stratagedatacondition" />
+          <NavigationProperty Name="stratagepagecondition" Relationship="Self.StpStratage" FromRole="stratege" ToRole="stratagepagecondition" />
         </EntityType>
         <Association Name="StdStratage">
           <End Role="stratege" Type="Self.stratege" Multiplicity="1" />
@@ -69,11 +141,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="SpiderModelStoreContainer">
-          <EntitySet Name="stratagedatacondition" EntityType="Self.stratagedatacondition" Schema="spider" store:Type="Tables" />
-          <EntitySet Name="stratagepagecondition" EntityType="Self.stratagepagecondition" Schema="spider" store:Type="Tables" />
-          <EntitySet Name="stratege" EntityType="Self.stratege" Schema="spider" store:Type="Tables" />
-          <EntitySet Name="test" EntityType="Self.test" Schema="spider" store:Type="Tables" />
+        <EntityContainer Name="spiderEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="stratagedatacondition" EntityType="Self.stratagedatacondition" />
+          <EntitySet Name="stratagepagecondition" EntityType="Self.stratagepagecondition" />
+          <EntitySet Name="stratege" EntityType="Self.stratege" />
           <AssociationSet Name="StdStratage" Association="Self.StdStratage">
             <End Role="stratege" EntitySet="stratege" />
             <End Role="stratagedatacondition" EntitySet="stratagedatacondition" />
@@ -83,147 +154,45 @@
             <End Role="stratagepagecondition" EntitySet="stratagepagecondition" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
-    <!-- CSDL content -->
-    <edmx:ConceptualModels>
-      <Schema Namespace="SpiderModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityContainer Name="SpiderEntities" annotation:LazyLoadingEnabled="true" >
-          <EntitySet Name="StratageDetailSet" EntityType="SpiderModel.StratageDetail" />
-          <EntitySet Name="stratagedatacondition" EntityType="SpiderModel.stratagedatacondition" />
-          <EntitySet Name="stratagepagecondition" EntityType="SpiderModel.stratagepagecondition" />
-          <EntitySet Name="stratege" EntityType="SpiderModel.stratege" />
-          <EntitySet Name="test" EntityType="SpiderModel.test" />
-          <AssociationSet Name="StpStratage" Association="SpiderModel.StpStratage">
-            <End Role="stratege" EntitySet="stratege" />
-            <End Role="stratagepagecondition" EntitySet="stratagepagecondition" />
-          </AssociationSet>
-          <AssociationSet Name="StdStratage" Association="SpiderModel.StdStratage">
-            <End Role="stratege" EntitySet="stratege" />
-            <End Role="stratagedatacondition" EntitySet="stratagedatacondition" />
-          </AssociationSet>
-        </EntityContainer>
-        <EntityType Name="StratageDetail">
-          <Key>
-            <PropertyRef Name="StdId" />
-          </Key>
-          <Property Name="StdId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="StdStratage" Type="String" Nullable="false" />
-        </EntityType>
-        <EntityType Name="stratagedatacondition">
-          <Key>
-            <PropertyRef Name="stdid" />
-          </Key>
-          <Property Name="stdid" Type="Int32" Nullable="false" />
-          <Property Name="StdName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="StdTransName" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="StdSelector" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="StdAttribute" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="StdText" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="StdStratage" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="stratege" Relationship="SpiderModel.StdStratage" FromRole="stratagedatacondition" ToRole="stratege" />
-        </EntityType>
-        <EntityType Name="stratagepagecondition">
-          <Key>
-            <PropertyRef Name="stpid" />
-          </Key>
-          <Property Name="stpid" Type="Int32" Nullable="false" />
-          <Property Name="StpName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="StpSelector" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="StpAttribute" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="StpText" Type="Boolean" />
-          <Property Name="StpStratage" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="stratege" Relationship="SpiderModel.StpStratage" FromRole="stratagepagecondition" ToRole="stratege" />
-        </EntityType>
-        <EntityType Name="stratege">
-          <Key>
-            <PropertyRef Name="StaId" />
-          </Key>
-          <Property Name="StaId" Type="Int32" Nullable="false" />
-          <Property Name="StaName" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="StaRootUrl" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="StaDeep" Type="Int32" />
-          <Property Name="StaStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="stratagepagecondition" Relationship="SpiderModel.StpStratage" FromRole="stratege" ToRole="stratagepagecondition" />
-          <NavigationProperty Name="stratagedatacondition" Relationship="SpiderModel.StdStratage" FromRole="stratege" ToRole="stratagedatacondition" />
-        </EntityType>
-        <EntityType Name="test">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="name" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <Association Name="StpStratage">
-          <End Type="SpiderModel.stratege" Role="stratege" Multiplicity="1" />
-          <End Type="SpiderModel.stratagepagecondition" Role="stratagepagecondition" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="stratege">
-              <PropertyRef Name="StaId" />
-            </Principal>
-            <Dependent Role="stratagepagecondition">
-              <PropertyRef Name="stpid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="StdStratage">
-          <End Type="SpiderModel.stratege" Role="stratege" Multiplicity="1" />
-          <End Type="SpiderModel.stratagedatacondition" Role="stratagedatacondition" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="stratege">
-              <PropertyRef Name="StaId" />
-            </Principal>
-            <Dependent Role="stratagedatacondition">
-              <PropertyRef Name="stdid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="SpiderModelStoreContainer" CdmEntityContainer="SpiderEntities" >
+        <EntityContainerMapping StorageEntityContainer="spiderModelStoreContainer" CdmEntityContainer="spiderEntities">
           <EntitySetMapping Name="stratagedatacondition">
-            <EntityTypeMapping TypeName="SpiderModel.stratagedatacondition">
+            <EntityTypeMapping TypeName="spiderModel.stratagedatacondition">
               <MappingFragment StoreEntitySet="stratagedatacondition">
-                <ScalarProperty Name="StdStratage" ColumnName="StdStratage" />
-                <ScalarProperty Name="StdText" ColumnName="StdText" />
-                <ScalarProperty Name="StdAttribute" ColumnName="StdAttribute" />
-                <ScalarProperty Name="StdSelector" ColumnName="StdSelector" />
-                <ScalarProperty Name="StdTransName" ColumnName="StdTransName" />
-                <ScalarProperty Name="StdName" ColumnName="StdName" />
                 <ScalarProperty Name="stdid" ColumnName="stdid" />
+                <ScalarProperty Name="StdName" ColumnName="StdName" />
+                <ScalarProperty Name="StdTransName" ColumnName="StdTransName" />
+                <ScalarProperty Name="StdSelector" ColumnName="StdSelector" />
+                <ScalarProperty Name="StdAttribute" ColumnName="StdAttribute" />
+                <ScalarProperty Name="StdText" ColumnName="StdText" />
+                <ScalarProperty Name="StdStratage" ColumnName="StdStratage" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="stratagepagecondition">
-            <EntityTypeMapping TypeName="SpiderModel.stratagepagecondition">
+            <EntityTypeMapping TypeName="spiderModel.stratagepagecondition">
               <MappingFragment StoreEntitySet="stratagepagecondition">
-                <ScalarProperty Name="StpStratage" ColumnName="StpStratage" />
-                <ScalarProperty Name="StpText" ColumnName="StpText" />
-                <ScalarProperty Name="StpAttribute" ColumnName="StpAttribute" />
-                <ScalarProperty Name="StpSelector" ColumnName="StpSelector" />
-                <ScalarProperty Name="StpName" ColumnName="StpName" />
                 <ScalarProperty Name="stpid" ColumnName="stpid" />
+                <ScalarProperty Name="StpName" ColumnName="StpName" />
+                <ScalarProperty Name="StpSelector" ColumnName="StpSelector" />
+                <ScalarProperty Name="StpAttribute" ColumnName="StpAttribute" />
+                <ScalarProperty Name="StpText" ColumnName="StpText" />
+                <ScalarProperty Name="StpStratage" ColumnName="StpStratage" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="stratege">
-            <EntityTypeMapping TypeName="SpiderModel.stratege">
+            <EntityTypeMapping TypeName="spiderModel.stratege">
               <MappingFragment StoreEntitySet="stratege">
-                <ScalarProperty Name="StaStatus" ColumnName="StaStatus" />
-                <ScalarProperty Name="StaDeep" ColumnName="StaDeep" />
-                <ScalarProperty Name="StaRootUrl" ColumnName="StaRootUrl" />
-                <ScalarProperty Name="StaName" ColumnName="StaName" />
                 <ScalarProperty Name="StaId" ColumnName="StaId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="test">
-            <EntityTypeMapping TypeName="SpiderModel.test">
-              <MappingFragment StoreEntitySet="test">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="StaName" ColumnName="StaName" />
+                <ScalarProperty Name="StaRootUrl" ColumnName="StaRootUrl" />
+                <ScalarProperty Name="StaDeep" ColumnName="StaDeep" />
+                <ScalarProperty Name="StaStatus" ColumnName="StaStatus" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

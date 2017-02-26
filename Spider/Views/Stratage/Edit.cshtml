@@ -4,54 +4,74 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
 <div ng-app="myApp" ng-controller="stratageController" class="row addTop">
-    <form novalidate>
-        <div class="row col-lg-4 hidden">
+    <form name="stratage">
+        <div class="row">
             <span name="StaId" ng-model="sta.StaId"></span>
         </div>
-        <div class="row col-lg-4">
+        <div class="row">
             Stratage Name:<br>
-            <input type="text" class="input-sm" ng-model="sta.StaName"><br>
+            <input type="text" name="StaName" class="input-sm" ng-model="sta.StaName" required>
+            <span style="color:red" ng-show="stratage.StaName.$dirty && stratage.StaName.$invalid">
+                <span style="color:red" ng-show="stratage.StaName.$error.required">Stratage name is required!</span>
+            </span>
+            <br>
         </div>
-        <div class="row col-lg-4">
+        <div class="row">
             Root Url:<br>
-            <input type="text" class="input-sm" ng-model="sta.StaRootUrl">
+            <input type="url" class="input-sm" name="StaRootUrl" ng-model="sta.StaRootUrl">
+            <span style="color:red" ng-show="stratage.StaRootUrl.$dirty && stratage.StaRootUrl.$invalid">
+                Must be an Url!
+            </span>
         </div>
-        <div class="row col-lg-4">
+        <div class="row">
             Deep:<br>
             <input type="text" class="input-sm" ng-model="sta.StaDeep">
         </div>
-        <div class="row col-lg-4">
-            Deep:<br>
-            <input type="text" class="input-sm" ng-model="sta.StaDeep">
-        </div>
-        <br><br>
-        <div class="btn-group addTop">
-            <button type="button" id="btn_Save" class="btn btn-default" ng-click="Save()">Query</button>
+        <div class="row btn-group addTop">
+            <button type="button" id="btn_Save" class="btn btn-default" ng-click="Save()" ng-disabled="stratage.StaName.$dirty && stratage.StaName.$invalid||stratage.StaRootUrl.$dirty && stratage.StaRootUrl.$invalid">Save</button>
             <a class="btn btn-default" href="/Stratage/Query">back</a>
         </div>
-        @*<button class="btn btn-default" ng-click="reset()">RESET</button>*@
     </form>
-    @*<p>form = {{user}}</p>*@
-    @*<p>master = {{master}}</p>*@
 </div>
 
 <script>
-    var app = angular.module('myApp', []);
+    @*var app = angular.module('myApp', []);
     app.controller('stratageController', function ($scope, $http) {
         var staId=@{ViewData["StaId"]};
         var sta={};
         if(staId!=null&&staId!=undefined){
-            $http.get("/Stratage/Query")
+            //$http.get("/Stratage/Query");
         }
         $scope.Save = function ($scope, $http) {
-
+            //$http.get("/Stratage/Save");
         }
         //$scope.master = { firstName: "John", lastName: "Doe" };
         //$scope.reset = function () {
         //    $scope.user = angular.copy($scope.master);
         //};
         //$scope.reset();
+    });*@
+    var app = angular.module('myApp', []);
+    app.controller('stratageController', function ($scope, $http) {
+        var starage = '@Html.Raw(ViewData["stratage"])';
+        $scope.sta = JSON.parse(starage);
+
+        $scope.Save = function ($scope, $http) {
+            var postData = {
+                "method": "Save",
+                "model": JSON.stringify(this.sta),
+            };
+            $.post("/Stratage/Ajax", postData, function (response) {
+                var rtn = JSON.parse(response);
+                if (rtn.success == true) {
+                    alert("Save Successed!");
+                    window.location = "/Stratage/Query";
+                }
+                else {
+                    alert(rtn.message);
+                }
+            });
+        }
     });
 </script>

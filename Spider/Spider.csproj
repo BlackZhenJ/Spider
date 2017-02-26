@@ -112,6 +112,7 @@
   <ItemGroup>
     <Content Include="Css\globals.css" />
     <Content Include="packages.config" />
+    <Content Include="Scripts\Common\Globals.js" />
     <Content Include="Views\Web.config">
       <SubType>Designer</SubType>
     </Content>

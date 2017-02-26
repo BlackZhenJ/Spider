@@ -10,6 +10,13 @@ namespace Spider.Controllers
 {
     public class StratageController : Controller
     {
+        internal StratageModel Model
+        {
+            get
+            {
+                return StratageModel.Instanse;
+            }
+        }
         // GET: Stratage
         public ActionResult Query()
         {
@@ -18,14 +25,8 @@ namespace Spider.Controllers
 
         public ActionResult QueryStratage()
         {
-            var testData = new
-            {
-                records = new object[]
-                {
-                    new {Name="zheng",Country="China"}
-                }
-            };
-            return Content(Globals.JsonToString(testData));
+            var staLst = Model.GetList();
+            return Content(Globals.JsonToString(staLst));
         }
 
         private int? staId { get; set; }
@@ -38,16 +39,76 @@ namespace Spider.Controllers
             set { staId = value; }
         }
 
-        public ActionResult Edit(int? staid)
+        public ActionResult Edit(int? id)
         {
-            StaId = staId;
+            StaId = id;
             stratege sta = null;
             if (StaId != null)
-            {
-                sta= new SpiderEntities().
-            }
-            ViewData["StaId"] = StaId;
+                sta = StratageModel.Instanse.GetModelById(StaId.Value);
+            else
+                sta = new stratege();
+
+            ViewData["stratage"] = Globals.JsonToString(sta);
+
             return View();
+        }
+
+        public ActionResult Ajax()
+        {
+            var method = HttpContext.Request.Form["method"];
+            var result = Globals.JsonToString(new
+            {
+                success = true,
+                message = ""
+            }); ;
+
+            try
+            {
+                switch (method)
+                {
+                    case "Save":
+                        result = Save();
+                        break;
+                    case "Delete":
+                        Delete();
+                        break;
+
+                }
+            }
+            catch (Exception e)
+            {
+                result = Globals.JsonToString(new
+                {
+                    success = false,
+                    message = e.Message
+                });
+            }
+
+            return Content(result);
+        }
+
+        private void Delete()
+        {
+            var id = HttpContext.Request.Form["id"];
+
+            StratageModel.Instanse.Delete(int.Parse(id));
+        }
+
+        private string Save()
+        {
+            var model = HttpContext.Request.Form["model"];
+
+            var success = true;
+            var msg = "";
+
+            StratageModel.Instanse.SaveModel(Globals.StringToJson<stratege>(model));
+
+            return Globals.JsonToString(new
+            {
+                success = success,
+                message = msg
+            });
+
         }
     }
 }

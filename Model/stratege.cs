@@ -20,7 +20,7 @@ namespace Model
         public Nullable<int> StaDeep { get; set; }
         public string StaStatus { get; set; }
     
-        public virtual stratagepagecondition stratagepagecondition { get; set; }
         public virtual stratagedatacondition stratagedatacondition { get; set; }
+        public virtual stratagepagecondition stratagepagecondition { get; set; }
     }
 }

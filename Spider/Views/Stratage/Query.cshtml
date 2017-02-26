@@ -7,9 +7,27 @@
 <script>
     var app = angular.module('myApp', []);
     app.controller('customersCtrl', function ($scope, $http) {
+
         QueryData($scope, $http);
-        $scope.at = function () {
+
+        $scope.Query = function () {
             QueryData($scope, $http);
+        }
+
+        $scope.Delete = function (obj) {
+            var id = obj.x.StaId;
+            $.post("/Stratage/Ajax",
+                {
+                    "method": "Delete",
+                    "id": id
+                },
+                function (rep) {
+                    if (Globals.CheckCommonErrorByStr(rep)) {
+                        alert("Deleted!");
+                        QueryData($scope, $http);
+                    }
+                }
+            );
         }
     });
 
@@ -18,9 +36,9 @@
         //$scope.names = [{ "Name": "z", "Country": "c" }, { "Name": "z1", "Country": "c1" }]
         $http.get("/Stratage/QueryStratage")
         .success(function (response) {
-            $scope.names = response.records;
-            if (response.records.length == 0) {
-                $("#tb_stratage").innerHtml("<td col=3>no data</td>")
+            $scope.stas = response;
+            if (response == null || response.length == 0) {
+                $("#noDataExp").show();
             }
         });
     }
@@ -34,7 +52,7 @@
 
 <div ng-app="myApp" ng-controller="customersCtrl" class="row addTop">
     <div class="btn-group addTop">
-        <button type="button" id="btn_Query" class="btn btn-default" ng-click="at()">Query</button>
+        <button type="button" id="btn_Query" class="btn btn-default" ng-click="Query()">Query</button>
         <a class="btn btn-default" href="/Stratage/Edit">Add</a>
         <a class="btn btn-default" href="/Home">back</a>
     </div>
@@ -45,14 +63,24 @@
             <thead>
                 <tr>
                     <td>Check</td>
-                    <td>Name</td>
-                    <td>Country</td>
+                    <td>StaName</td>
+                    <td>StaRootUrl</td>
+                    <td>StaDeep</td>
+                    <td>Operation</td>
                 </tr>
             </thead>
-            <tr ng-repeat="x in names">
+            <tr ng-repeat="x in stas">
                 <td><input type="checkbox" class="checkbox" /></td>
-                <td>{{ x.Name }}</td>
-                <td>{{ x.Country }}</td>
+                <td>{{ x.StaName }}</td>
+                <td>{{ x.StaRootUrl }}</td>
+                <td>{{ x.StaDeep }}</td>
+                <td>
+                    <a href="/Stratage/Edit/{{x.StaId}}" class="btn-link">Edit</a>
+                    <a href="#" class="btn-link" id="{{x.StaId}}" ng-click="Delete(this)">Delete</a>
+                </td>
+            </tr>
+            <tr id="noDataExp" style="text-align:center;display:none">
+                <td colspan="9999">No Data Founded!</td>
             </tr>
         </table>
 

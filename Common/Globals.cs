@@ -12,5 +12,10 @@ namespace Common
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(obj);
         }
+
+        public static T StringToJson<T>(string model)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(model);
+        }
     }
 }
