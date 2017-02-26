@@ -1,0 +1,57 @@
+﻿
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div ng-app="myApp" ng-controller="stratageController" class="row addTop">
+    <form novalidate>
+        <div class="row col-lg-4 hidden">
+            <span name="StaId" ng-model="sta.StaId"></span>
+        </div>
+        <div class="row col-lg-4">
+            Stratage Name:<br>
+            <input type="text" class="input-sm" ng-model="sta.StaName"><br>
+        </div>
+        <div class="row col-lg-4">
+            Root Url:<br>
+            <input type="text" class="input-sm" ng-model="sta.StaRootUrl">
+        </div>
+        <div class="row col-lg-4">
+            Deep:<br>
+            <input type="text" class="input-sm" ng-model="sta.StaDeep">
+        </div>
+        <div class="row col-lg-4">
+            Deep:<br>
+            <input type="text" class="input-sm" ng-model="sta.StaDeep">
+        </div>
+        <br><br>
+        <div class="btn-group addTop">
+            <button type="button" id="btn_Save" class="btn btn-default" ng-click="Save()">Query</button>
+            <a class="btn btn-default" href="/Stratage/Query">back</a>
+        </div>
+        @*<button class="btn btn-default" ng-click="reset()">RESET</button>*@
+    </form>
+    @*<p>form = {{user}}</p>*@
+    @*<p>master = {{master}}</p>*@
+</div>
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('stratageController', function ($scope, $http) {
+        var staId=@{ViewData["StaId"]};
+        var sta={};
+        if(staId!=null&&staId!=undefined){
+            $http.get("/Stratage/Query")
+        }
+        $scope.Save = function ($scope, $http) {
+
+        }
+        //$scope.master = { firstName: "John", lastName: "Doe" };
+        //$scope.reset = function () {
+        //    $scope.user = angular.copy($scope.master);
+        //};
+        //$scope.reset();
+    });
+</script>

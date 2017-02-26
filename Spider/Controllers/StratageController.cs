@@ -1,4 +1,5 @@
 ﻿using Common;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,28 @@ namespace Spider.Controllers
                 }
             };
             return Content(Globals.JsonToString(testData));
+        }
+
+        private int? staId { get; set; }
+        public int? StaId
+        {
+            get
+            {
+                return staId;
+            }
+            set { staId = value; }
+        }
+
+        public ActionResult Edit(int? staid)
+        {
+            StaId = staId;
+            stratege sta = null;
+            if (StaId != null)
+            {
+                sta= new SpiderEntities().
+            }
+            ViewData["StaId"] = StaId;
+            return View();
         }
     }
 }

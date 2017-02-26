@@ -5,12 +5,17 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="9c7c041bfe44418ea113b8357368b2f9" Name="Diagram1" >
-        <EntityTypeShape EntityType="SpiderModel.Stratage" Width="1.5" PointX="3.375" PointY="0.5" />
         <EntityTypeShape EntityType="SpiderModel.SpiderDict" Width="1.5" PointX="1" PointY="0.5" IsExpanded="true" />
         <EntityTypeShape EntityType="SpiderModel.StratagePageCondition" Width="1.5" PointX="3.375" PointY="3.25" />
         <AssociationConnector Association="SpiderModel.StratageStratagePageCondition" />
         <EntityTypeShape EntityType="SpiderModel.StratageDataCondition" Width="1.5" PointX="5.75" PointY="0.5" />
         <AssociationConnector Association="SpiderModel.StratageStratageDataCondition" />
+        <EntityTypeShape EntityType="SpiderModel.stratagedatacondition" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SpiderModel.stratagepagecondition" Width="1.5" PointX="1.5" PointY="3.25" />
+        <EntityTypeShape EntityType="SpiderModel.stratege" Width="1.5" PointX="4.75" PointY="3.875" />
+        <EntityTypeShape EntityType="SpiderModel.test" Width="1.5" PointX="1" PointY="0.625" />
+        <AssociationConnector Association="SpiderModel.StpStratage" />
+        <AssociationConnector Association="SpiderModel.StdStratage" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

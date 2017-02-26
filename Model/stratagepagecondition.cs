@@ -12,11 +12,15 @@ namespace Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Stratage
+    public partial class stratagepagecondition
     {
-        public int StaId { get; set; }
-        public string StaName { get; set; }
-        public string StaRootUrl { get; set; }
-        public int StaDeep { get; set; }
+        public int stpid { get; set; }
+        public string StpName { get; set; }
+        public string StpSelector { get; set; }
+        public string StpAttribute { get; set; }
+        public Nullable<bool> StpText { get; set; }
+        public int StpStratage { get; set; }
+    
+        public virtual stratege stratege { get; set; }
     }
 }

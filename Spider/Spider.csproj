@@ -142,6 +142,7 @@
     <Content Include="Web.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Stratage\Query.cshtml" />
+    <Content Include="Views\Stratage\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -167,6 +168,10 @@
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{3257a50f-e7de-486e-acec-442bc0342b0a}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{764EEE55-EEBF-475A-949E-487875568953}</Project>
+      <Name>Model</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
